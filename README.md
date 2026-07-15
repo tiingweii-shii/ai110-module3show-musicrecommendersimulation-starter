@@ -55,7 +55,35 @@ they're in the mood for), and `likes_acoustic` (a boolean nudge toward/away from
 The **`Recommender`** computes a numeric score per song from these (see the Algorithm Recipe
 below), then chooses the top *k* songs by score.
 
-<!-- Algorithm Recipe added in Phase 2 -->
+### Algorithm Recipe
+
+Each song starts at a score of **0.0**. Then:
+
+| Rule | Points | Why |
+|------|--------|-----|
+| **Genre match** (song genre == favorite genre) | **+2.0** | Genre is the strongest signal of taste, so it's worth the most. |
+| **Mood match** (song mood == favorite mood) | **+1.0** | Mood matters, but a happy pop song and a happy country song can both fit. |
+| **Energy closeness** | **+1.5 × (1 − \|song.energy − target_energy\|)** | Rewards songs whose energy is *close* to the target — not just high energy. A perfect energy match adds 1.5; a total mismatch adds ~0. |
+| **Acoustic preference** | **+0.5** | If `likes_acoustic` is true and the song's acousticness ≥ 0.6 (or the user dislikes acoustic and the song is ≤ 0.3), nudge the score. |
+
+**Ranking Rule:** score *every* song in the catalog with the rule above, then sort from highest
+to lowest score and return the top *k*. Scoring judges one song; ranking orders the whole list —
+you need both.
+
+**Example user profile** (the default): `favorite_genre="pop"`, `favorite_mood="happy"`,
+`target_energy=0.8`, `likes_acoustic=False`. This should surface upbeat, high-energy pop like
+*Sunrise City* while pushing calm acoustic tracks like *Moonlit Adagio* to the bottom.
+
+### Expected biases (before testing)
+
+- **Genre dominance:** because a genre match is worth twice a mood match, I expect songs in the
+  user's favorite genre to crowd the top even when an out-of-genre song fits the mood/energy
+  better. This is a built-in filter bubble.
+- **Small-catalog skew:** with only ~18 songs and several `lofi`/`pop` entries, popular genres
+  have more chances to appear; rare genres (metal, reggae) may almost never surface unless
+  requested directly.
+- **Middle-energy blind spot:** the energy term rewards closeness, so users wanting extreme
+  energy (0.0 or 1.0) get sharper separation than users targeting 0.5, where many songs cluster.
 
 ---
 
