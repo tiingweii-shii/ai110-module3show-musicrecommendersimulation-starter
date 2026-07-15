@@ -149,25 +149,41 @@ Profile: High-Energy Pop (default)
 
 ## Experiments You Tried
 
-Use this section to document the experiments you ran. For example:
+**Weight-shift experiment.** I halved the genre weight (2.0 → 1.0) and doubled the energy weight
+(1.5 → 3.0), then re-ran the default `pop/happy/0.8` profile:
 
-- What happened when you changed the weight on genre from 2.0 to 0.5
-- What happened when you added tempo or valence to the score
-- How did your system behave for different types of users
+```
+1. Sunrise City       [pop/happy]        energy=0.82  score=5.44
+2. Gym Hero           [pop/intense]      energy=0.93  score=4.11
+3. Rooftop Lights     [indie pop/happy]  energy=0.76  score=3.88
+4. Dust and Diesel    [country/happy]    energy=0.64  score=3.52
+5. Concrete Verses    [hip hop/aggressive] energy=0.79 score=3.47
+```
+
+The two pop songs still lead, but the *gap* between them and the out-of-genre songs collapses
+(4.97 → 5.44 vs. 2.44 → 3.88). Lesson: the original 2.0 genre weight was the main force creating
+a "pop bubble." When energy dominates, songs from country, indie pop, and hip hop with the right
+energy climb into contention — the results become **more diverse but less genre-loyal**.
+
+**Profile diversity.** Swapping profiles (Chill Lofi vs. Deep Intense Rock) cleanly flips the
+rankings: lofi/acoustic tracks top one list and none appear in the other. This confirms the
+scoring actually responds to preferences rather than always returning the same "popular" songs.
 
 ---
 
 ## Limitations and Risks
 
-Summarize some limitations of your recommender.
+- **Tiny catalog (18 songs).** Rankings are fragile — one song can dominate a whole category.
+- **Genre bubble.** A genre match (+2.0) outweighs a mood match (+1.0), so it favors "more of
+  the same genre" over songs that fit the user's actual vibe. This is a classic filter bubble.
+- **Exact-match only.** Genre/mood must match *exactly* ("pop" ≠ "indie pop", "chill" ≠
+  "relaxed"), so near-misses get zero credit even when they'd fit.
+- **Ignores most features.** `tempo_bpm`, `valence`, and `danceability` are in the data but not
+  yet scored, and it has no idea about lyrics, language, or the user's listening history.
+- **No collaborative signal.** It can't learn from other listeners, so it never surprises you
+  with something outside your stated taste.
 
-Examples:
-
-- It only works on a tiny catalog
-- It does not understand lyrics or language
-- It might over favor one genre or mood
-
-You will go deeper on this in your model card.
+I go deeper on these in the [model card](model_card.md).
 
 ---
 

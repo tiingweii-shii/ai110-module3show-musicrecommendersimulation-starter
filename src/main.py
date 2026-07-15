@@ -30,9 +30,22 @@ def main() -> None:
     songs = load_songs("data/songs.csv")
     print(f"Loaded songs: {len(songs)}\n")
 
-    # Starter example profile
-    user_prefs = {"genre": "pop", "mood": "happy", "energy": 0.8, "likes_acoustic": False}
-    print_recommendations("High-Energy Pop (default)", user_prefs, songs, k=5)
+    # A set of diverse profiles to stress-test the scoring logic.
+    profiles = {
+        "High-Energy Pop (default)":
+            {"genre": "pop", "mood": "happy", "energy": 0.8, "likes_acoustic": False},
+        "Chill Lofi":
+            {"genre": "lofi", "mood": "chill", "energy": 0.35, "likes_acoustic": True},
+        "Deep Intense Rock":
+            {"genre": "rock", "mood": "intense", "energy": 0.9, "likes_acoustic": False},
+        # Adversarial: wants an acoustic, high-energy, "intense" ambient track — but ambient
+        # in the catalog is calm and low-energy, so these preferences conflict on purpose.
+        "Adversarial: Intense Acoustic Ambient":
+            {"genre": "ambient", "mood": "intense", "energy": 0.95, "likes_acoustic": True},
+    }
+
+    for label, user_prefs in profiles.items():
+        print_recommendations(label, user_prefs, songs, k=5)
 
 
 if __name__ == "__main__":
