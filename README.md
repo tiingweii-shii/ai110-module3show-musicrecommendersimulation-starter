@@ -124,18 +124,26 @@ You can add more tests in `tests/test_recommender.py`.
 
 ## Sample Recommendation Output
 
-Paste a sample of your recommender's output here as a text block so a reader can see what it produces:
+Running `python -m src.main` with the default "High-Energy Pop" profile produces:
 
 ```
-# e.g.:
-# User profile: genre=indie, mood=chill, energy=low
-# Recommendations:
-#   1. ...
-#   2. ...
-#   3. ...
-```
+Loaded songs: 18
 
-**Screenshot or video** *(optional)*: <!-- Insert a screenshot or demo video link here -->
+============================================================
+Profile: High-Energy Pop (default)
+  prefs: {'genre': 'pop', 'mood': 'happy', 'energy': 0.8, 'likes_acoustic': False}
+============================================================
+1. Sunrise City — Neon Echo [pop/happy]  Score: 4.97
+     Because: genre match (+2.0), mood match (+1.0), energy close to 0.80 (+1.47), non-acoustic song as preferred (+0.5)
+2. Gym Hero — Max Pulse [pop/intense]  Score: 3.80
+     Because: genre match (+2.0), energy close to 0.80 (+1.30), non-acoustic song as preferred (+0.5)
+3. Rooftop Lights — Indigo Parade [indie pop/happy]  Score: 2.44
+     Because: mood match (+1.0), energy close to 0.80 (+1.44)
+4. Dust and Diesel — Cody Rains [country/happy]  Score: 2.26
+     Because: mood match (+1.0), energy close to 0.80 (+1.26)
+5. Concrete Verses — MC Grid [hip hop/aggressive]  Score: 1.98
+     Because: energy close to 0.80 (+1.48), non-acoustic song as preferred (+0.5)
+```
 
 ---
 
