@@ -2,32 +2,60 @@
 
 ## Project Summary
 
-In this project you will build and explain a small music recommender system.
+In this project I built **VibeFinder 1.0**, a small, explainable, content-based music
+recommender. It reads a catalog of songs (with attributes like genre, mood, and energy),
+compares each song to a user's "taste profile," and returns a ranked list of suggestions.
+Crucially, every recommendation comes with **reasons** (e.g. `genre match (+2.0)`) so you can
+see *why* a song was picked instead of trusting a black box.
 
-Your goal is to:
+The goals of the project were to:
 
 - Represent songs and a user "taste profile" as data
 - Design a scoring rule that turns that data into recommendations
-- Evaluate what your system gets right and wrong
+- Evaluate what my system gets right and wrong
 - Reflect on how this mirrors real world AI recommenders
-
-Replace this paragraph with your own summary of what your version does.
 
 ---
 
 ## How The System Works
 
-Explain your design in plain language.
+### How real platforms do it (research summary)
 
-Some prompts to answer:
+Big platforms like Spotify, YouTube, and TikTok mostly blend **two** families of techniques:
 
-- What features does each `Song` use in your system
-  - For example: genre, mood, energy, tempo
-- What information does your `UserProfile` store
-- How does your `Recommender` compute a score for each song
-- How do you choose which songs to recommend
+- **Collaborative filtering** — predicts what you'll like based on *other people's behavior*.
+  If thousands of users who liked songs A and B also liked C, the system suggests C to anyone
+  who liked A and B. It uses signals like plays, likes, skips, saves, playlist adds, and
+  watch/listen time. Its strength is discovering non-obvious hits; its weakness is the
+  "cold-start" problem — a brand-new song or user has no behavior history yet.
+- **Content-based filtering** — predicts what you'll like based on the *attributes of the items*
+  themselves (a song's genre, tempo, energy, "valence"/positivity, acousticness, etc.) matched
+  against your past preferences. It handles new songs well and is easy to explain, but it tends
+  to keep recommending "more of the same," creating a **filter bubble**.
 
-You can include a simple diagram or bullet list if helpful.
+Real systems combine both (a *hybrid* approach) and layer on deep-learning models trained on
+huge interaction logs. **My simulation is purely content-based** — it's the simplest thing that
+still shows the core idea of turning data into a ranked prediction, and it's fully explainable.
+
+### What my version prioritizes
+
+VibeFinder scores each song by how well its attributes match a user's stated taste, and ranks
+the whole catalog from best match to worst. I prioritize **transparency** (every score is
+broken down into human-readable reasons) and **"vibe" matching** — I lean on genre, mood, and
+energy because in my own listening those three define a song's feel more than tempo alone.
+
+### Features used
+
+**`Song`** uses: `genre`, `mood`, `energy` (0.0–1.0), `tempo_bpm`, `valence` (positivity 0.0–1.0),
+`danceability` (0.0–1.0), and `acousticness` (0.0–1.0).
+
+**`UserProfile`** stores: `favorite_genre`, `favorite_mood`, `target_energy` (the energy level
+they're in the mood for), and `likes_acoustic` (a boolean nudge toward/away from acoustic songs).
+
+The **`Recommender`** computes a numeric score per song from these (see the Algorithm Recipe
+below), then chooses the top *k* songs by score.
+
+<!-- Algorithm Recipe added in Phase 2 -->
 
 ---
 
