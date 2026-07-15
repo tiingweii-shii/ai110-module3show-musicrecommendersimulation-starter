@@ -193,10 +193,17 @@ Read and complete `model_card.md`:
 
 [**Model Card**](model_card.md)
 
-Write 1 to 2 paragraphs here about what you learned:
+Building this made "turning data into predictions" feel concrete: a recommendation is really just
+a **score computed per item, then a sort**. Each song is judged in isolation by the same rule,
+and "recommending" is nothing more than ranking those judgments and slicing off the top. Seeing
+the reasons printed next to each score demystified it — there's no magic, just weighted arithmetic
+on a few features.
 
-- about how recommenders turn data into predictions
-- about where bias or unfairness could show up in systems like this
+It also showed me exactly where bias hides. My genre weight (+2.0) was double the mood weight, and
+that single choice was enough to trap a pop fan in a pop bubble and let a calm ambient track win a
+profile that explicitly asked for *intense, high-energy* music. In a real system with millions of
+users, tiny weighting decisions like that — made by an engineer, not the listener — quietly shape
+what everyone hears, which is how filter bubbles and over-favored genres emerge at scale.
 
 
 
